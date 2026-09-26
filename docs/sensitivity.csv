@@ -1,0 +1,14 @@
+tier,stack,assumption,base_%,at_low_%,at_high_%,swing_pts
+e-reader,moth_eye+dye+back_panel,load_j_day,94.62,195.15,62.45,132.7
+e-reader,moth_eye+dye+back_panel,light_level,94.62,47.31,141.93,94.62
+e-reader,moth_eye+dye+back_panel,dye_eff,94.62,64.57,124.67,60.11
+e-reader,moth_eye+dye+back_panel,conv_eff,94.62,78.3,110.93,32.63
+e-reader,moth_eye+dye+back_panel,back_cell_eff,94.62,85.99,103.25,17.26
+e-reader,moth_eye+dye+back_panel,lens_gain,94.62,91.74,97.49,5.75
+e-reader,moth_eye+dye+back_panel,moth_reflection,94.62,94.86,94.38,0.48
+phone,moth_eye+firefly,firefly_gain,12.12,6.55,16.11,9.56
+phone,moth_eye+firefly,display_share,12.12,9.09,15.15,6.06
+phone,moth_eye+firefly,moth_reflection,12.12,12.23,12.01,0.22
+tv,moth_eye+firefly,firefly_gain,25.76,13.91,34.22,20.31
+tv,moth_eye+firefly,display_share,25.76,24.25,27.28,3.03
+tv,moth_eye+firefly,moth_reflection,25.76,26.0,25.52,0.48
