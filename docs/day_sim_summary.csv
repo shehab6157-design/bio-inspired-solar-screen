@@ -1,0 +1,7 @@
+profile,policy,pass_rate_%,harvest_J_per_day,updates_per_day,missed_per_day,dead_hours,end_soc_%
+office_desk,fixed,100.0,18.67,144.0,0.0,0.0,78.8
+office_desk,torpor,100.0,18.67,209.8,0.0,0.0,64.9
+home_dim,fixed,58.3,8.87,144.0,0.0,0.0,87.7
+home_dim,torpor,100.0,8.87,149.6,0.0,0.0,69.1
+near_window,fixed,100.0,116.7,144.0,0.0,0.0,92.9
+near_window,torpor,100.0,116.7,255.0,0.0,0.0,86.8
