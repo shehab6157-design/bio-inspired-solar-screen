@@ -1,0 +1,13 @@
+city,policy,dark_%,worst_room_dark_%,refresh_day
+Northern Israel,torpor,0.0,0.0,174.5
+Northern Israel,self-forecast,0.0,0.0,184.3
+Northern Israel,waggle dance,0.0,0.0,184.4
+London,torpor,2.7,12.5,99.3
+London,self-forecast,0.9,4.4,99.5
+London,waggle dance,0.9,4.4,99.5
+Berlin,torpor,2.0,10.0,101.8
+Berlin,self-forecast,0.3,1.6,101.9
+Berlin,waggle dance,0.3,1.5,102.0
+Oslo,torpor,27.0,82.4,33.9
+Oslo,self-forecast,20.9,72.5,32.9
+Oslo,waggle dance,20.9,73.2,32.9

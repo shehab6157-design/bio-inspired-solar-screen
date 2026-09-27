@@ -29,6 +29,7 @@ if [ "$1" != "--quick" ]; then
     step "S5b placement";    python3 placement.py
     step "S6  hive";         python3 hive.py
     step "S6b climates";     python3 climates.py
+    step "S11 waggle";       python3 waggle.py
   else
     echo "Skipping real-light runs: data/pvgis_2020.csv not found (see src/real_data.py)"
   fi
