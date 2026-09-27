@@ -69,6 +69,8 @@ canvas{width:100%;height:280px;display:block}
 .stats{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}
 .stat{padding:16px;border-radius:16px;border:1px solid var(--line)}
 .stat b{font-family:var(--head);font-size:2rem;display:block;font-variant-numeric:tabular-nums}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}
+.cards .stat b{font-size:1.7rem}
 footer.wrap{padding:48px 24px 64px;border-top:1px solid var(--line);color:var(--soft);font-size:.95rem}
 footer p{max-width:70ch}
 </style>
@@ -87,6 +89,18 @@ footer p{max-width:70ch}
 </header>
 
 <main>
+
+<section class="wrap" aria-labelledby="s0">
+  <h2 id="s0">All the layers together</h2>
+  <p class="intro">Results from the full model, with every layer working as one organism. Everything on this page runs live in your browser from the same maths as the Python project.</p>
+  <div class="cards">
+    <div class="stat"><span>Phone, one working day</span><b>68% less</b><span>screen and message energy, 73 &rarr; 3 phone wake-ups</span></div>
+    <div class="stat"><span>TV, 4 hours an evening</span><b>48% less</b><span>50.9 &rarr; 26.7 kWh a year</span></div>
+    <div class="stat"><span>E-reader, 6 Wh battery</span><b>5.5 &rarr; 31 days</b><span>per charge</span></div>
+    <div class="stat"><span>Phone, an hour in summer sun</span><b>60 of 60 min</b><span>readable, instead of 6</span></div>
+  </div>
+</section>
+
 <section class="wrap" aria-labelledby="s1">
   <h2 id="s1">Pick a device, choose the layers</h2>
   <p class="intro">Each layer comes from a living thing. Some harvest light, some save energy, and some cost more than they give. The result shows how much of the device's daily energy the stack covers.</p>
@@ -152,6 +166,63 @@ footer p{max-width:70ch}
     </div>
   </div>
 </section>
+<section class="wrap" aria-labelledby="s4">
+  <h2 id="s4">Phones and TVs: taking off the sunglasses</h2>
+  <p class="intro">Every OLED screen wears a polarizer, like sunglasses: it stops glare but throws away more than half the screen's own light. Take it off and glare comes back. A moth-eye surface removes that glare. Choose the layers and the room light, and see whether the screen still beats the glare and what it saves.</p>
+  <div class="grid">
+    <div>
+      <fieldset><legend>Device</legend><div class="chips" id="pzDevice"></div></fieldset>
+      <fieldset>
+        <legend><label for="pzLux">Room light: <output id="pzLuxOut"></output></label></legend>
+        <input id="pzLux" type="range" min="0" max="100" step="1" value="45">
+      </fieldset>
+      <fieldset><legend>Layers</legend><div id="pzLayers"></div></fieldset>
+    </div>
+    <div class="result" aria-live="polite">
+      <div class="big" id="pzSaved">0%</div>
+      <p class="caption" id="pzText"></p>
+      <div class="rows">
+        <div class="row"><span>Screen power</span><span id="pzWatts"></span></div>
+        <div class="row"><span>Brightness needed to beat the glare</span><span id="pzNits"></span></div>
+        <div class="row"><span>Room light reflected back</span><span id="pzRefl"></span></div>
+      </div>
+      <p class="verdict" id="pzVerdict"></p>
+    </div>
+  </div>
+</section>
+
+<section class="wrap" aria-labelledby="s5">
+  <h2 id="s5">Two Seas: an hour in the summer sun</h2>
+  <p class="intro">Sunlight puts several watts of heat into a phone's face, more than its own chip. Phones answer by dimming or shutting down. A heat mirror sends the invisible heat back while visible light passes, like two seas that meet but do not mix. Moon mode goes further: like the moon, the screen shows the picture with the sun's own light.</p>
+  <div class="grid">
+    <div>
+      <fieldset><legend>Layers</legend><div id="tsLayers"></div></fieldset>
+      <fieldset>
+        <legend><label for="tsAir">Air temperature: <output id="tsAirOut">34</output> &deg;C</label></legend>
+        <input id="tsAir" type="range" min="25" max="42" step="1" value="34">
+      </fieldset>
+    </div>
+    <div class="result">
+      <canvas id="tsChart" role="img" aria-label="Phone temperature over one hour in the sun"></canvas>
+      <div class="legend"><span><i style="background:var(--ember)"></i>Today's phone</span><span><i style="background:var(--leaf)"></i>With your layers</span><span><i style="background:var(--soft)"></i>Phone dims itself (42 &deg;C) and shuts the screen off (47 &deg;C)</span></div>
+      <div class="stats">
+        <div class="stat"><span>Today's phone: readable</span><b id="tsToday"></b><span id="tsTodayPeak"></span></div>
+        <div class="stat"><span>With your layers: readable</span><b id="tsMine"></b><span id="tsMinePeak"></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap" aria-labelledby="s6">
+  <h2 id="s6">The hive: a home full of screens</h2>
+  <p class="intro">In a bee colony there is no boss: each bee takes work when it is well fed and declines it when it is tired. Here the phone, watch, TV and five small light-powered screens around a home share the messages the same way. These are real results: 30 simulated homes, January 2020 sunlight, no evening lamp.</p>
+  <fieldset><legend>City</legend><div class="chips" id="hvCity"></div></fieldset>
+  <div class="result">
+    <div class="bars" id="hvBars" aria-live="polite"></div>
+    <p class="hint" id="hvNote"></p>
+  </div>
+</section>
+
 </main>
 
 <footer class="wrap">
@@ -481,5 +552,198 @@ function init() {
 }
 init();
 </script>
+<script id="model2">
+// ---------- phones and TVs (mirrors src/polarizer.py) ----------
+const PZ = { t_pol: [0.42, 0.46], t_free_gain: [1.25, 1.40], r_int_pol: [0.003, 0.008],
+             r_int_free: [0.015, 0.04], moth_r: [0.002, 0.01], firefly: [0.15, 0.61] };
+const PZ_DEV = { phone: { label: "Phone", w200: [0.20, 0.35], max: 1200, cm2: 100 },
+                 tv: { label: "TV", w200: [60, 110], max: 800, cm2: 8300 } };
+const CONTRAST = 3, SWITCH_LUX = 300;
+function comfortNits(lux) { return Math.min(500, Math.max(10, 40 * Math.pow(Math.max(lux, 1) / 10, 0.45))); }
+function pzSample(n, seed) {
+  const r = rng(seed), o = {};
+  for (const k in PZ) o[k] = U(r, PZ[k], n);
+  return o;
+}
+function optics(f, p, i) {
+  const surface = f.moth ? p.moth_r[i] : 0.044;
+  const tGlass = (1 - surface) / (1 - 0.044);
+  const t = f.nopol ? p.t_pol[i] * p.t_free_gain[i] : p.t_pol[i];
+  const rInt = f.nopol ? p.r_int_free[i] : p.r_int_pol[i];
+  const ext = f.firefly ? 1 + p.firefly[i] : 1;
+  return { t: t * tGlass * ext, r: surface + rInt };
+}
+function screenAt(dev, lux, f, n = 800) {
+  const d = PZ_DEV[dev], p = pzSample(n, 42), rw = rng(9), w200 = U(rw, d.w200, n), refl = U(rw, [0.5, 1.7], n);
+  const saved = [], watts = [], nits = [], rr = []; let unread = 0;
+  for (let i = 0; i < n; i++) {
+    const base = optics({}, p, i), mine = optics(f, p, i);
+    const need0 = Math.max(comfortNits(lux), (CONTRAST - 1) * base.r * lux / Math.PI);
+    const w0 = w200[i] * Math.min(need0, d.max) / 200;
+    let need = Math.max(comfortNits(lux), (CONTRAST - 1) * mine.r * lux / Math.PI), w;
+    if (f.moon && dev === "phone" && lux >= SWITCH_LUX) { w = refl[i] * d.cm2 / 1000; need = 0; }
+    else w = w200[i] * Math.min(need, d.max) / 200 * (base.t / mine.t);
+    if (need > d.max) unread++;
+    saved.push(100 * (1 - w / w0)); watts.push(w); nits.push(need); rr.push(mine.r);
+  }
+  return { saved: quant(saved, .5), watts: quant(watts, .5), nits: quant(nits, .5), refl: quant(rr, .5), unreadable: unread / n };
+}
+
+// ---------- Two Seas (mirrors src/two_seas.py) ----------
+const TS = { sun: [600, 900], sky: [10, 20], h: [6, 14], cap: [150, 250], front: [0.009, 0.011], back: [0.010, 0.012],
+             chip: [1.0, 2.0], a_vis: [0.85, 0.95], a_nir: [0.75, 0.90], eps: [0.84, 0.90], mirror: [0.6, 0.9],
+             refl_a_vis: [0.3, 0.6], refl_w: [0.05, 0.17] };
+function twoSeas(f, airC, n = 300) {
+  const r = rng(1), p = {}; for (const k in TS) p[k] = U(r, TS[k], n);
+  const opt = pzSample(n, 2), SIG = 5.67e-8, dt = 10, steps = 360, K = 273.15;
+  const temps = Array.from({ length: n }, () => K + 28), trace = [], unread = new Float64Array(n);
+  let peakMed = 0;
+  for (let s = 0; s < steps; s++) {
+    const tmp = [];
+    for (let i = 0; i < n; i++) {
+      const T = temps[i], c = T - K, tAir = airC + K, tSky = airC - p.sky[i] + K;
+      const cap = c >= 47 ? 0 : c >= 42 ? 600 : 1200;
+      const aNir = f.mirror || f.moon ? p.a_nir[i] * (1 - p.mirror[i]) : p.a_nir[i];
+      const alpha = 0.05 * 0.95 + 0.43 * (f.moon ? p.refl_a_vis[i] : p.a_vis[i]) + 0.52 * aNir;
+      let screenW, readable;
+      if (f.moon) { screenW = cap > 0 ? p.refl_w[i] : 0; readable = cap > 0; }
+      else {
+        const base = optics({}, opt, i), mine = optics({ nopol: f.display, moth: f.display }, opt, i);
+        const need = Math.max(comfortNits(30000), (CONTRAST - 1) * mine.r * 30000 / Math.PI);
+        const shown = Math.min(need, cap);
+        screenW = 0.275 * shown / 200 * (base.t / mine.t);
+        readable = cap > 0 && shown >= need;
+      }
+      if (!readable) unread[i] += dt / 60;
+      const heatIn = p.sun[i] * p.front[i] * alpha + screenW + (cap > 0 ? p.chip[i] : 0);
+      const out = p.h[i] * (p.front[i] + p.back[i]) * (T - tAir) + 0.8 * SIG * p.back[i] * (T ** 4 - tAir ** 4)
+                + p.eps[i] * SIG * p.front[i] * (T ** 4 - tSky ** 4);
+      temps[i] = T + (heatIn - out) * dt / p.cap[i];
+      tmp.push(temps[i] - K);
+    }
+    const m = quant(tmp, .5); trace.push(m); peakMed = Math.max(peakMed, m);
+  }
+  return { trace, peak: peakMed, readable: 60 - quant(unread, .5) };
+}
+
+// ---------- hive: real results from src/climates.py (January 2020, daylight only) ----------
+const HIVE = {
+  "Northern Israel": { light: 100, today: [72.8, 590, 0.0], nearest: [3.0, 47.6, 0.0], hive: [3.2, 46.4, 0.0] },
+  "London":          { light: 32,  today: [72.8, 590, 13.0], nearest: [3.0, 49.4, 13.7], hive: [4.3, 58.2, 2.1] },
+  "Berlin":          { light: 32,  today: [72.8, 590, 12.2], nearest: [3.0, 49.6, 13.1], hive: [4.2, 57.1, 1.9] },
+  "Oslo":            { light: 11,  today: [72.8, 590, 46.4], nearest: [3.0, 59.2, 50.9], hive: [6.3, 90.6, 27.5] },
+};
+if (typeof module !== "undefined") module.exports = { screenAt, twoSeas, HIVE };
+</script>
+
+<script>
+// ---------- interface for the new sections ----------
+const st2 = { pzDev: "phone", pz: { nopol: true, moth: true, firefly: false, moon: false },
+              ts: { mirror: true, display: true, moon: false }, air: 34, city: "London" };
+const LUX_STEPS = v => Math.round(Math.pow(10, 0.5 + v * 4 / 100));   // slider 0-100 -> about 3 to 30,000 lux
+
+function toggleList(el, items, state, onChange) {
+  el.innerHTML = "";
+  for (const [id, name, what, disabled] of items) {
+    const lab = document.createElement("label");
+    lab.className = "layer" + (disabled ? " off" : "");
+    lab.innerHTML = `<input type="checkbox" ${state[id] ? "checked" : ""} ${disabled ? "disabled" : ""}><span><b>${name}</b><small>${what}</small></span>`;
+    lab.querySelector("input").addEventListener("change", e => { state[id] = e.target.checked; onChange(); });
+    el.appendChild(lab);
+  }
+}
+
+function renderPzLayers() {
+  toggleList($("pzLayers"), [
+    ["nopol", "No polarizer", "More of the screen's own light gets out"],
+    ["moth", "Moth eye", "Cuts the glare that returns without the polarizer"],
+    ["firefly", "Firefly lantern", "Gets more light out of the OLED per watt"],
+    ["moon", "Moon mode", st2.pzDev === "phone" ? "In a bright room, reflect the room's light instead of glowing" : "Phones only in this model", st2.pzDev !== "phone"],
+  ], st2.pz, renderPz);
+}
+function renderPz() {
+  const lux = LUX_STEPS(+$("pzLux").value);
+  $("pzLuxOut").textContent = lux < 100 ? `${lux} lux, dim room` : lux < 1000 ? `${lux} lux, normal room` : lux < 10000 ? `${lux} lux, bright window` : `${lux.toLocaleString()} lux, outdoors`;
+  const r = screenAt(st2.pzDev, lux, { ...st2.pz, moon: st2.pz.moon && st2.pzDev === "phone" });
+  const ok = r.unreadable < 0.5;
+  $("pzSaved").textContent = pct(r.saved, 0);
+  $("pzSaved").classList.toggle("neg", r.saved < 0);
+  $("pzText").textContent = `less screen power than today's ${PZ_DEV[st2.pzDev].label.toLowerCase()} in this light.`;
+  $("pzWatts").textContent = r.watts < 1 ? `${(r.watts * 1000).toFixed(0)} mW` : `${r.watts.toFixed(1)} W`;
+  $("pzNits").textContent = r.nits === 0 ? "none (the room lights the picture)" : `${r.nits.toFixed(0)} nits (max ${PZ_DEV[st2.pzDev].max})`;
+  $("pzRefl").textContent = `${(100 * r.refl).toFixed(1)}%`;
+  $("pzVerdict").innerHTML = ok ? '<span class="good">Readable: the screen beats the glare.</span>'
+    : '<span class="bad">Unreadable: the glare is stronger than the screen can shine. Try adding the moth eye.</span>';
+}
+
+function renderTsLayers() {
+  toggleList($("tsLayers"), [
+    ["mirror", "Heat mirror", "Sends the sun's invisible heat back"],
+    ["display", "Efficient display", "No polarizer + moth eye: less glare, less power"],
+    ["moon", "Moon mode", "Outdoors, show the picture with the sun's own light"],
+  ], st2.ts, renderTs);
+}
+let tsTimer;
+function renderTs() {
+  clearTimeout(tsTimer);
+  tsTimer = setTimeout(() => {
+    const today = twoSeas({}, st2.air), mine = twoSeas(st2.ts, st2.air);
+    $("tsToday").textContent = `${today.readable.toFixed(0)} of 60 min`;
+    $("tsMine").textContent = `${mine.readable.toFixed(0)} of 60 min`;
+    $("tsTodayPeak").textContent = `peak ${today.peak.toFixed(1)} °C`;
+    $("tsMinePeak").textContent = `peak ${mine.peak.toFixed(1)} °C`;
+    drawTs(today.trace, mine.trace);
+  }, 60);
+}
+function drawTs(a, b) {
+  const c = $("tsChart"), dpr = window.devicePixelRatio || 1, w = c.clientWidth, h = c.clientHeight;
+  c.width = w * dpr; c.height = h * dpr;
+  const g = c.getContext("2d"); g.scale(dpr, dpr);
+  const css = getComputedStyle(document.documentElement);
+  const L = 44, R = 10, T = 10, B = 28, pw = w - L - R, ph = h - T - B, lo = 25, hi = 60;
+  const y = v => T + ph * (1 - (v - lo) / (hi - lo));
+  g.font = "13px " + css.getPropertyValue("--body"); g.fillStyle = css.getPropertyValue("--soft");
+  g.strokeStyle = css.getPropertyValue("--line"); g.lineWidth = 1;
+  for (const v of [30, 40, 50, 60]) { g.beginPath(); g.moveTo(L, y(v)); g.lineTo(L + pw, y(v)); g.stroke(); g.fillText(v + "°", 8, y(v) + 4); }
+  for (const m of [0, 15, 30, 45, 60]) g.fillText(m + " min", L + pw * m / 60 - (m === 60 ? 42 : m ? 18 : 0), h - 8);
+  g.setLineDash([5, 4]); g.strokeStyle = css.getPropertyValue("--soft");
+  for (const v of [42, 47]) { g.beginPath(); g.moveTo(L, y(v)); g.lineTo(L + pw, y(v)); g.stroke(); }
+  g.setLineDash([]);
+  for (const [tr, col] of [[a, "--ember"], [b, "--leaf"]]) {
+    g.strokeStyle = css.getPropertyValue(col); g.lineWidth = 2.4; g.beginPath();
+    tr.forEach((v, i) => { const x = L + pw * i / (tr.length - 1); i ? g.lineTo(x, y(v)) : g.moveTo(x, y(v)); });
+    g.stroke();
+  }
+}
+
+function renderHive() {
+  const d = HIVE[st2.city];
+  const rows = [["Today: every message wakes the phone", d.today, "var(--ember)"],
+                ["Nearest screen", d.nearest, "var(--sky)"],
+                ["Hive, with bee thresholds", d.hive, "var(--leaf)"]];
+  const maxDark = Math.max(1, ...rows.map(r => r[1][2]));
+  $("hvBars").innerHTML = rows.map(([name, v, col]) => `
+    <div class="bar">
+      <div class="top"><b>${name}</b><span>${v[0]} phone wake-ups a day</span></div>
+      <div class="track"><div class="fill" style="width:${(100 * v[2] / maxDark).toFixed(1)}%;background:${col}"></div></div>
+      <small>Light-powered screens unable to update ${v[2]}% of the time. Message energy ${v[1]} J a day.</small>
+    </div>`).join("");
+  $("hvNote").textContent = `January light here is ${d.light}% of northern Israel's. ` +
+    (d.hive[2] < d.nearest[2] ? "The bee thresholds protect the tired screens." : "There is enough light, so the thresholds stay out of the way.");
+}
+
+(function init2() {
+  chipGroup($("pzDevice"), "pzdev", Object.entries(PZ_DEV).map(([k, v]) => [k, v.label]), st2.pzDev,
+            id => { st2.pzDev = id; renderPzLayers(); renderPz(); });
+  $("pzLux").addEventListener("input", renderPz);
+  renderPzLayers(); renderPz();
+  $("tsAir").addEventListener("input", e => { st2.air = +e.target.value; $("tsAirOut").textContent = st2.air; renderTs(); });
+  renderTsLayers(); renderTs();
+  chipGroup($("hvCity"), "city", Object.keys(HIVE).map(k => [k, k]), st2.city, id => { st2.city = id; renderHive(); });
+  renderHive();
+  window.addEventListener("resize", () => renderTs());
+})();
+</script>
+
 </body>
 </html>
