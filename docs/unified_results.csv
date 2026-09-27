@@ -1,0 +1,4 @@
+strategy,battery_days_median,battery_days_worst10%,reached_target_%,frontlight_h_per_day,syncs_per_day
+glow_only,5.9,4.9,0.0,0.0,144.1
+chameleon,13.9,10.9,0.0,0.0,141.0
+unified,31.3,26.9,76.0,1.63,60.8
