@@ -2,7 +2,7 @@
 
 An open, tested energy model for screens that borrow from nature: moth eyes, firefly lanterns, leaf antennas, chameleons, hummingbird torpor, bee colonies and the sun and moon. It works for **any screen device**: e-readers, shelf labels, smartwatches, phones, tablets and TVs.
 
-**Live demo:** https://shehab6157-design.github.io/bio-inspired-solar-screen/
+**Live demo:** https://shehab6157-design.github.io/bio-inspired-solar-screen/ — includes a **"Score your screen"** tool: describe any screen and get its Light-Life grade and the nature layer that would improve it most.
 
 The question it answers: **which nature-inspired ideas actually save energy or keep a screen working, on which device, and what do they cost?** Every answer comes from simulation with honest uncertainty ranges, and the key results are tested on **real sunlight data** from four cities.
 
@@ -127,6 +127,10 @@ One number for any screen: energy per readable hour across a realistic day of li
 LED light carries almost no infrared (0.004 per unit of visible light); sunlight carries a lot (0.87). Reading both bands, the eye identifies daylight through a window **100%** of the time, even through low-e glass, where a normal one-band light sensor gets it right only about **40%** of the time. It gives sensor-less devices, like shelf labels, free sensing.
 ![Light eye](docs/light_eye.png)
 
+**Weather-aware planning and the waggle dance** — `src/waggle.py`
+Home e-papers that learn their normal day and notice when *today* is darker fail far less: the darkest screen in a home can't update 4.4% of the time in a London January instead of 12.5% with torpor, and 1.6% instead of 10% in Berlin. Sharing the window screen's weather reading with the others (the "waggle dance") adds nothing measurable, because every room sees the same outdoor weather, only dimmer.
+![Waggle dance](docs/waggle.png)
+
 **Invisible-band harvesting** — `src/spectral.py`
 A dye layer tuned to near-infrared stops dimming the screen, but room LED light has almost no infrared, so indoors it gains almost nothing. It helps only devices used in daylight.
 ![Spectral heatmap, phone](docs/spectral_heatmap_phone.png)
@@ -140,6 +144,7 @@ A dye layer tuned to near-infrared stops dimming the screen, but room LED light 
 - **A sky-cooling layer makes a phone hotter** (54 °C vs 51 °C). Phone glass already radiates heat well; sky coolers help things get colder than the air, not hot objects.
 - **Predictive planning helps only at the edges.** On real winter light, reactive torpor already works; prediction adds survival only in the darkest spots.
 - **Bee thresholds are unnecessary in sunny climates.** They earn their place only where winters are dark.
+- **The waggle dance didn't help.** Screens sharing a light forecast did no better than each screen reading its own light. The lesson from nature here is "sense and plan for the day," not "communicate."
 - **Light alone can't tell a pocket from a dark bedroom.** The best light-only rule catches 93% of pockets but mistakes 19% of dark-bedroom readings for a pocket, which would switch the screen off while someone reads in bed. For that decision the light eye must team up with a proximity sensor.
 
 ---
@@ -186,9 +191,10 @@ This is a design and analysis tool, not a claim to have invented the individual 
 | `two_seas.py` | Phone temperature in summer sun |
 | `light_score.py` | Light-Life Score: energy per readable hour for any screen |
 | `light_eye.py` | Two-band sensing from the screen's own layers |
+| `waggle.py` | Weather-aware planning, with and without a shared forecast |
 | `organism.py` | All layers together, device by device |
 
-**86 automated tests** in `tests/` check the physics and behaviour rules (for example: no light means no harvest; removing the polarizer matches the industry's reported saving; the moth eye keeps a polarizer-free phone readable in strong sun).
+**89 automated tests** in `tests/` check the physics and behaviour rules (for example: no light means no harvest; removing the polarizer matches the industry's reported saving; the moth eye keeps a polarizer-free phone readable in strong sun).
 
 ## Run it
 
