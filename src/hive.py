@@ -48,6 +48,7 @@ DOCS = ROOT / "docs"
 DOCS.mkdir(exist_ok=True)
 
 DAYS = 28
+START_DAY = 61                           # winter series is Nov, Dec, Jan, Feb: day 61 = 1 January
 H = 30                                   # households
 ROOMS = ["kitchen", "entrance", "desk", "living", "bedroom"]
 DAYLIGHT = [0.02, 0.005, 0.01, 0.01, 0.003]    # share of outdoor light per room
@@ -83,7 +84,8 @@ def room_light(lamp=True):
     lux, sun = [], []
     for df_value in DAYLIGHT:
         l, s, _ = pl.winter_light(df_value, lamp=lamp)
-        lux.append(l[:DAYS * 1440]); sun.append(s[:DAYS * 1440])
+        a = START_DAY * 1440
+        lux.append(l[a:a + DAYS * 1440]); sun.append(s[a:a + DAYS * 1440])
     return np.array(lux), np.array(sun)
 
 

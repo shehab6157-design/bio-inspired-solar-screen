@@ -1,7 +1,7 @@
 home,policy,grid_J_day,phone_wakes_day,on_time_%,on_free_light_%,epaper_dark_time_%,dashboard_refresh_day
 evening lamp,today,589.7,72.8,100.0,0.0,0.0,48.0
 evening lamp,nearest,47.6,3.0,100.0,57.8,0.0,48.0
-evening lamp,hive,45.4,3.0,100.0,61.1,0.0,242.2
+evening lamp,hive,45.4,3.0,100.0,61.1,0.0,226.4
 daylight only,today,589.7,72.8,100.0,0.0,0.0,48.0
-daylight only,nearest,47.6,3.0,100.0,57.8,0.0,48.0
-daylight only,hive,45.9,3.0,100.0,60.4,0.0,187.8
+daylight only,nearest,47.6,3.0,100.0,57.6,0.0,48.0
+daylight only,hive,46.4,3.2,100.0,59.6,0.0,166.8
