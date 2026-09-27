@@ -1,0 +1,24 @@
+cff-version: 1.2.0
+message: "If you use this software or its findings, please cite it as below."
+title: "Bio-Inspired Solar Screen: an open, tested energy model for nature-inspired screens"
+authors:
+  - family-names: Shibli
+    given-names: Shehab
+version: 1.0.0
+date-released: 2026-09-28
+license: MIT
+repository-code: "https://github.com/shehab6157-design/bio-inspired-solar-screen"
+url: "https://shehab6157-design.github.io/bio-inspired-solar-screen/"
+abstract: >-
+  An open simulation model of nature-inspired screen technologies (moth-eye
+  anti-glare, firefly light extraction, reflective and glowing modes, torpor
+  and circadian energy planning, bee-colony task routing) for any screen
+  device, validated on real satellite sunlight data, with a proposed metric,
+  the Light-Life Score: energy per hour a screen is actually readable.
+keywords:
+  - display energy
+  - biomimicry
+  - energy harvesting
+  - OLED
+  - e-paper
+  - simulation

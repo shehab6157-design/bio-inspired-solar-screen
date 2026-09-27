@@ -234,3 +234,11 @@ Sunlight data: PVGIS (Photovoltaic Geographical Information System), European Co
 ## Author
 
 Shehab Shibli — [GitHub](https://github.com/shehab6157-design) · [LinkedIn](https://www.linkedin.com/in/shehab-shibli)
+
+## License
+
+MIT License, copyright (c) 2026 Shehab Shibli. See [LICENSE](LICENSE). To cite this work, use the "Cite this repository" button or [CITATION.cff](CITATION.cff).
+
+## Acknowledgments
+
+AI assistance (Claude, by Anthropic) was used for coding and writing. The project idea, design decisions, direction and verification of results are the author's.
