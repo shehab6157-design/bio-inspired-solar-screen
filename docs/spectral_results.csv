@@ -1,0 +1,7 @@
+tier,dye,band,harvest_J_day,penalty_J_day,net_%,readability_%,tint,net_%_range,sun_eff_%
+e-reader,flat (old model),all colours,16.156,0.0,97.918,81.0,0.0,,
+e-reader,best spectral band,"920 nm, width 300 nm",30.253,0.0,183.352,96.316,0.049,110.011 to 256.692,5.45
+phone,flat (old model),all colours,40.632,2222.222,-4.363,90.0,0.0,,
+phone,best spectral band,"1000 nm, width 240 nm",54.097,4.223,0.1,99.979,0.001,0.056 to 0.143,3.58
+tv,flat (old model),all colours,391.698,170000.0,-9.423,90.0,0.0,,
+tv,best spectral band,"690 nm, width 20 nm",23.681,3.01,0.001,100.0,0.0,0.001 to 0.002,0.58
