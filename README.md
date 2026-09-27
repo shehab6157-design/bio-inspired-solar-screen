@@ -28,6 +28,7 @@ The question it answers: **which nature-inspired ideas actually save energy or k
 | Rhythm planning | Circadian and weekly rhythms | Learns daily and weekly light patterns and plans ahead |
 | Shared budget | A body's metabolism | One energy plan decides screen mode, brightness and updates |
 | Household colony | Honeybee division of labour | Sends each message to the best-placed screen; tired screens decline work |
+| Light eye | Animal eyes that see beyond visible light | Reads the screen's own visible and infrared layers to tell daylight from lamp light, with no extra parts |
 
 ---
 
@@ -59,6 +60,22 @@ These come from `src/organism.py`, which stacks the layers one at a time on a re
 ### E-reader: 6 Wh battery, 2.5 hours of reading a day
 
 **5.5 → 31.3 days per charge**: glowing only → chameleon → unified glide path.
+
+### The Light-Life Score: rating screens the way people use them
+
+Official energy tests measure a screen's power at a few fixed room-light levels in a lab. They never check whether the picture can actually be read against glare, and they never go outdoors. The **Light-Life Score** runs a screen through a day of real light, from a dark bedroom to full sun, and measures **energy per hour the screen is actually readable**, graded A to G.
+
+| Screen | Energy per readable hour | Readable | Grade |
+|---|---|---|---|
+| Phone today (polarizer OLED) | 0.35 Wh | 100% | D |
+| Phone, polarizer-free | 0.31 Wh | 92% | **D!** (unreadable in full sun) |
+| Phone, polarizer-free + moth eye | 0.23 Wh | 100% | D |
+| **Phone, full bio-stack** | **0.09 Wh** | 100% | **B** |
+| Reflective colour screen + front light | 0.15 Wh | 100% | C |
+| TV today | 44.1 Wh | 100% | E |
+| TV, polarizer-free + moth eye + firefly | 23.2 Wh | 100% | D |
+
+A power-only test would rank the polarizer-free phone above today's phone; the score catches that it saves power by being unreadable in the sun.
 
 ### Home screens on real winter light
 
@@ -102,6 +119,14 @@ Hourly 2020 data from PVGIS (European Commission). Real winter near a window get
 Routing messages to the best-placed screen cuts phone wake-ups by 96% and message energy by 92%, with every message on time.
 ![Hive](docs/hive.png)
 
+**Light-Life Score** — `src/light_score.py`
+One number for any screen: energy per readable hour across a realistic day of light, with a "!" when a screen is readable less than 95% of the time.
+![Light-Life Score](docs/light_score.png)
+
+**Light eye** — `src/light_eye.py`
+LED light carries almost no infrared (0.004 per unit of visible light); sunlight carries a lot (0.87). Reading both bands, the eye identifies daylight through a window **100%** of the time, even through low-e glass, where a normal one-band light sensor gets it right only about **40%** of the time. It gives sensor-less devices, like shelf labels, free sensing.
+![Light eye](docs/light_eye.png)
+
 **Invisible-band harvesting** — `src/spectral.py`
 A dye layer tuned to near-infrared stops dimming the screen, but room LED light has almost no infrared, so indoors it gains almost nothing. It helps only devices used in daylight.
 ![Spectral heatmap, phone](docs/spectral_heatmap_phone.png)
@@ -115,6 +140,7 @@ A dye layer tuned to near-infrared stops dimming the screen, but room LED light 
 - **A sky-cooling layer makes a phone hotter** (54 °C vs 51 °C). Phone glass already radiates heat well; sky coolers help things get colder than the air, not hot objects.
 - **Predictive planning helps only at the edges.** On real winter light, reactive torpor already works; prediction adds survival only in the darkest spots.
 - **Bee thresholds are unnecessary in sunny climates.** They earn their place only where winters are dark.
+- **Light alone can't tell a pocket from a dark bedroom.** The best light-only rule catches 93% of pockets but mistakes 19% of dark-bedroom readings for a pocket, which would switch the screen off while someone reads in bed. For that decision the light eye must team up with a proximity sensor.
 
 ---
 
@@ -133,6 +159,7 @@ A prior-art search found that **every individual mechanism already exists**:
 1. **One open, tested model that runs all these mechanisms together** for any screen device, including how they interact. The patents each cover one mechanism.
 2. **Quantified findings not found in the searched literature:** the moth eye doubling the design window for polarizer-free panels; reflecting beating harvesting for phone heat; sky coolers heating phones; adaptive control surviving 6 times deeper into a room on real winter light; bee thresholds mattering only in dark climates.
 3. **A configurator:** describe any device in a small JSON file (`devices/`) and get its best stack and its trade-offs.
+4. **The Light-Life Score, a proposed metric:** today's standard tests (for example ENERGY STAR and IEC 62087) average a screen's power at fixed room-light levels. This score adds readability against glare and outdoor light to the rating. It is a proposal, not an adopted standard.
 
 This is a design and analysis tool, not a claim to have invented the individual mechanisms. The search was not a legal opinion.
 
@@ -157,9 +184,11 @@ This is a design and analysis tool, not a claim to have invented the individual 
 | `climates.py` | The hive in Israel, London, Berlin and Oslo |
 | `polarizer.py` | Polarizer-free OLED + moth eye |
 | `two_seas.py` | Phone temperature in summer sun |
+| `light_score.py` | Light-Life Score: energy per readable hour for any screen |
+| `light_eye.py` | Two-band sensing from the screen's own layers |
 | `organism.py` | All layers together, device by device |
 
-**75 automated tests** in `tests/` check the physics and behaviour rules (for example: no light means no harvest; removing the polarizer matches the industry's reported saving; the moth eye keeps a polarizer-free phone readable in strong sun).
+**86 automated tests** in `tests/` check the physics and behaviour rules (for example: no light means no harvest; removing the polarizer matches the industry's reported saving; the moth eye keeps a polarizer-free phone readable in strong sun).
 
 ## Run it
 
@@ -186,6 +215,7 @@ curl -s "https://re.jrc.ec.europa.eu/api/v5_2/seriescalc?lat=32.69&lon=35.42&sta
 
 - **Lab validation:** the clearest testable prediction is the moth eye's effect on polarizer-free panels. It could be checked by an optics lab with a real panel and a moth-eye film.
 - **An open configurator** for manufacturers, built on `configure.py`.
+- **A real light diet:** replace the Light-Life Score's assumed day of light with light logged by volunteers' phones, building an open dataset of the light screens actually live in.
 
 ## Inspiration
 
