@@ -18,6 +18,7 @@ step "S1  spectral";         python3 spectral.py
 step "S3  unified";          python3 unified.py
 step "S7  polarizer";        python3 polarizer.py
 step "S8  two_seas";         python3 two_seas.py
+step "S9  light_score";      python3 light_score.py
 
 if [ "$1" != "--quick" ]; then
   step "S2  circadian";      python3 circadian.py

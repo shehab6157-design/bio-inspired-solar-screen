@@ -1,0 +1,9 @@
+screen,Wh_per_day,readable_%,Wh_per_readable_hour,grade
+phone today (polarizer OLED),2.107,100.0,0.3512,D
+"phone, polarizer-free",1.724,91.7,0.3082,D!
+"phone, polarizer-free + moth eye",1.382,100.0,0.2303,D
+"phone, full bio-stack (+firefly, moon mode)",0.517,100.0,0.0861,B
+reflective colour screen + front light,0.901,100.0,0.1502,C
+TV today (polarizer OLED),220.471,100.0,44.0943,E
+"TV, polarizer-free + moth eye",159.974,100.0,31.9948,D
+"TV, + firefly",115.837,100.0,23.1674,D
