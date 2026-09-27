@@ -220,6 +220,38 @@ footer p{max-width:70ch}
   <div class="result"><div class="bars" id="lsBars" aria-live="polite"></div></div>
 </section>
 
+<section class="wrap" aria-labelledby="s8">
+  <h2 id="s8">Score your screen</h2>
+  <p class="intro">Describe any screen, from a watch to a TV, and get its Light-Life grade: the energy it needs for every hour it is truly readable across a real day of light. Then see which nature layer would improve it most. The defaults describe a typical phone today.</p>
+  <div class="grid">
+    <div>
+      <fieldset><legend>Screen type</legend><div class="chips" id="scType"></div></fieldset>
+      <fieldset><legend>Where it is used</legend><div class="chips" id="scDiet"></div></fieldset>
+      <fieldset>
+        <legend><label for="scSize">Screen size: <output id="scSizeOut"></output></label></legend>
+        <input id="scSize" type="range" min="1.5" max="85" step="0.5" value="6.5">
+      </fieldset>
+      <fieldset>
+        <legend><label for="scMax">Maximum brightness: <output id="scMaxOut"></output> nits</label></legend>
+        <input id="scMax" type="range" min="200" max="3000" step="50" value="1200">
+      </fieldset>
+      <fieldset><legend>Front layers</legend><div id="scLayers"></div></fieldset>
+    </div>
+    <div class="result" aria-live="polite">
+      <div class="big" id="scGrade">D</div>
+      <p class="caption" id="scText"></p>
+      <div class="rows">
+        <div class="row"><span>Energy per readable hour</span><span id="scWh"></span></div>
+        <div class="row"><span>Energy per day</span><span id="scDay"></span></div>
+        <div class="row"><span>Readable</span><span id="scRead"></span></div>
+        <div class="row"><span>Where it fails</span><span id="scFail"></span></div>
+      </div>
+      <p class="verdict">Best next layer</p>
+      <div id="scBest"></div>
+    </div>
+  </div>
+</section>
+
 <section class="wrap" aria-labelledby="s6">
   <h2 id="s6">The hive: a home full of screens</h2>
   <p class="intro">In a bee colony there is no boss: each bee takes work when it is well fed and declines it when it is tired. Here the phone, watch, TV and five small light-powered screens around a home share the messages the same way. These are real results: 30 simulated homes, January 2020 sunlight, no evening lamp.</p>
@@ -780,6 +812,107 @@ function renderScore() {
 }
 chipGroup($("lsGroup"), "lsgroup", Object.keys(LIGHT_SCORE).map(k => [k, k]), lsGroup, id => { lsGroup = id; renderScore(); });
 renderScore();
+</script>
+
+<script id="scoreModel">
+// Score-your-screen (mirrors src/light_score.py, generalised to any screen)
+const SC_DIETS = {
+  handheld: [[1.0, 5, "dark room"], [1.5, 80, "dim home"], [2.0, 400, "office / lit room"],
+             [0.5, 2000, "by a window"], [0.5, 10000, "outdoors, shade"], [0.5, 30000, "outdoors, sun"]],
+  tv: [[1.5, 5, "dark room"], [2.0, 50, "evening lamp"], [1.0, 200, "lit room"], [0.5, 1000, "sunny room"]],
+};
+const SC_BANDS = [["A", 0.05], ["B", 0.1], ["C", 0.2], ["D", 0.4], ["E", 0.8], ["F", 1.6]];
+function scGrade(wh, cm2) {
+  const x = wh * 100 / cm2;
+  for (const [g, lim] of SC_BANDS) if (x <= lim) return g;
+  return "G";
+}
+function sizeToCm2(inches) { return Math.pow(inches * 2.54, 2) * 0.43; }   // ~16:9 to 20:9 screens
+// spec: {type: "glow"|"reflective"|"hybrid", diet, cm2, maxNits, nopol, moth, firefly}
+function scoreScreen(spec, n = 600) {
+  const p = pzSample(n, 42), r = rng(9);
+  // watts per cm^2 at 200 nits with a polarizer OLED: phones ~0.2-0.35 W per 100 cm^2;
+  // TVs draw more per area (60-110 W for a 55-inch panel, electronics included)
+  const wPerCm2 = U(r, spec.diet === "tv" ? [60 / 8300, 110 / 8300] : [0.0020, 0.0035], n);
+  const refl = U(r, [0.5, 1.7], n), front = U(r, [0.05, 0.15], n);
+  const diet = SC_DIETS[spec.diet], total = diet.reduce((a, d) => a + d[0], 0);
+  const perReadable = [], perDay = [], readPct = [];
+  const failAt = new Map();
+  for (let i = 0; i < n; i++) {
+    const base = optics({}, p, i), mine = optics(spec, p, i);
+    let e = 0, ok = 0;
+    for (const [hours, lux, place] of diet) {
+      const reflective = spec.type === "reflective" || (spec.type === "hybrid" && lux >= SWITCH_LUX);
+      if (reflective) {
+        const w = refl[i] * spec.cm2 / 1000 + (lux < SWITCH_LUX ? front[i] * spec.cm2 / 100 : 0);
+        e += w * hours * 3600; ok += hours;
+      } else {
+        const need = Math.max(comfortNits(lux), (CONTRAST - 1) * mine.r * lux / Math.PI);
+        const shown = Math.min(need, spec.maxNits);
+        const w = wPerCm2[i] * spec.cm2 * (shown / 200) * (base.t / mine.t);
+        e += w * hours * 3600;
+        if (need <= spec.maxNits) ok += hours; else failAt.set(place, (failAt.get(place) || 0) + 1);
+      }
+    }
+    perReadable.push(e / 3600 / Math.max(ok, 1e-9)); perDay.push(e / 3600); readPct.push(100 * ok / total);
+  }
+  const wh = quant(perReadable, .5), readable = quant(readPct, .5);
+  const fails = [...failAt.entries()].filter(([, c]) => c > n / 2).map(([pl]) => pl);
+  return { wh, day: quant(perDay, .5), readable, grade: scGrade(wh, spec.cm2) + (readable < 95 ? "!" : ""), fails };
+}
+function bestNextLayer(spec) {
+  const now = scoreScreen(spec, 300), tries = [];
+  const options = [["nopol", "Remove the polarizer"], ["moth", "Add a moth-eye surface"], ["firefly", "Add firefly extraction"]];
+  for (const [k, label] of options) if (!spec[k] && spec.type !== "reflective") tries.push([label, { ...spec, [k]: true }]);
+  if (spec.type === "glow") tries.push(["Add moon mode (reflective in bright light)", { ...spec, type: "hybrid" }]);
+  return tries.map(([label, s2]) => {
+    const r = scoreScreen(s2, 300);
+    return { label, grade: r.grade, wh: r.wh, gain: 100 * (1 - r.wh / now.wh), readable: r.readable };
+  }).sort((a, b) => b.gain - a.gain);
+}
+if (typeof module !== "undefined") module.exports = { scoreScreen, bestNextLayer, sizeToCm2 };
+</script>
+
+<script>
+const sc = { type: "glow", diet: "handheld", nopol: false, moth: false, firefly: false };
+function renderScLayers() {
+  toggleList($("scLayers"), [
+    ["nopol", "No polarizer", "More of the screen's own light gets out", sc.type === "reflective"],
+    ["moth", "Moth eye", "Anti-glare surface", sc.type === "reflective"],
+    ["firefly", "Firefly lantern", "More light out per watt", sc.type === "reflective"],
+  ], sc, renderScore2);
+}
+let scTimer;
+function renderScore2() {
+  const inches = +$("scSize").value, maxN = +$("scMax").value;
+  $("scSizeOut").textContent = `${inches}" diagonal`;
+  $("scMaxOut").textContent = maxN;
+  clearTimeout(scTimer);
+  scTimer = setTimeout(() => {
+    const spec = { ...sc, cm2: sizeToCm2(inches), maxNits: maxN };
+    const r = scoreScreen(spec);
+    $("scGrade").textContent = r.grade;
+    $("scGrade").classList.toggle("neg", r.grade.endsWith("!"));
+    $("scText").textContent = r.grade.endsWith("!")
+      ? "The grade has a warning: this screen saves energy partly by being unreadable."
+      : "Light-Life grade, from A (best) to G.";
+    $("scWh").textContent = r.wh < 1 ? `${r.wh.toFixed(3)} Wh` : `${r.wh.toFixed(1)} Wh`;
+    $("scDay").textContent = r.day < 1 ? `${r.day.toFixed(2)} Wh` : `${r.day.toFixed(1)} Wh`;
+    $("scRead").innerHTML = `<span class="${r.readable >= 95 ? "good" : "bad"}">${r.readable.toFixed(0)}% of the time</span>`;
+    $("scFail").textContent = r.fails.length ? r.fails.join(", ") : "nowhere";
+    const best = sc.type === "reflective" ? [] : bestNextLayer(spec);
+    $("scBest").innerHTML = best.length ? best.slice(0, 3).map(b => `
+      <div class="row"><span>${b.label}</span><span><b>${b.grade}</b> &nbsp; ${b.gain >= 0 ? "saves" : "costs"} ${Math.abs(b.gain).toFixed(0)}%${b.readable < 95 ? " (but unreadable in sun)" : ""}</span></div>`).join("")
+      : '<div class="row"><span>Reflective screens are lit by the room; the front light in dark rooms is the main cost.</span></div>';
+  }, 80);
+}
+chipGroup($("scType"), "sctype", [["glow", "Glowing (OLED)"], ["reflective", "Reflective (e-paper-like)"], ["hybrid", "Hybrid with moon mode"]], sc.type,
+          id => { sc.type = id; renderScLayers(); renderScore2(); });
+chipGroup($("scDiet"), "scdiet", [["handheld", "Carried around (phone, tablet, watch)"], ["tv", "At home (TV, monitor)"]], sc.diet,
+          id => { sc.diet = id; if (id === "tv") { $("scSize").value = 55; $("scMax").value = 800; } else { $("scSize").value = 6.5; $("scMax").value = 1200; } renderScore2(); });
+$("scSize").addEventListener("input", renderScore2);
+$("scMax").addEventListener("input", renderScore2);
+renderScLayers(); renderScore2();
 </script>
 
 </body>
