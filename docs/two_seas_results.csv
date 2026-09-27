@@ -1,0 +1,7 @@
+stack,peak_c,min_to_throttle,unreadable_min,screen_off_min,harvested_J,sun_heat_W,never_throttled_%
+today,51.1,6.0,54.0,50.3,0.0,6.5,0.0
+heat mirror,47.1,8.7,51.3,24.5,0.0,4.0,0.0
+NIR harvest,48.8,6.5,53.5,48.7,567.5,5.7,0.0
+sky emitter,53.9,5.7,54.3,51.0,0.0,6.5,0.0
+two seas,47.1,9.8,47.8,21.3,0.0,4.0,0.8
+two seas + chameleon,44.5,19.5,0.0,0.0,0.0,2.6,23.8
