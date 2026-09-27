@@ -213,6 +213,13 @@ footer p{max-width:70ch}
   </div>
 </section>
 
+<section class="wrap" aria-labelledby="s7">
+  <h2 id="s7">The Light-Life Score</h2>
+  <p class="intro">Official energy tests measure a screen's power at a few fixed room-light levels in a lab, and never check whether you can actually read it. This score runs each screen through a real day of light, from a dark bedroom to full sun, and asks: how much energy does it need for every hour it is truly readable? Lower is better. A "!" means the screen is unreadable more than 5% of the time.</p>
+  <fieldset><legend>Screens</legend><div class="chips" id="lsGroup"></div></fieldset>
+  <div class="result"><div class="bars" id="lsBars" aria-live="polite"></div></div>
+</section>
+
 <section class="wrap" aria-labelledby="s6">
   <h2 id="s6">The hive: a home full of screens</h2>
   <p class="intro">In a bee colony there is no boss: each bee takes work when it is well fed and declines it when it is tired. Here the phone, watch, TV and five small light-powered screens around a home share the messages the same way. These are real results: 30 simulated homes, January 2020 sunlight, no evening lamp.</p>
@@ -743,6 +750,36 @@ function renderHive() {
   renderHive();
   window.addEventListener("resize", () => renderTs());
 })();
+</script>
+
+<script>
+// Light-Life Score results from src/light_score.py
+const LIGHT_SCORE = {
+  "Phones": [
+    ["Phone today (polarizer OLED)", 0.3512, 100.0, "D"],
+    ["Phone, polarizer-free", 0.3082, 91.7, "D!"],
+    ["Phone, polarizer-free + moth eye", 0.2303, 100.0, "D"],
+    ["Phone, full bio-stack", 0.0861, 100.0, "B"],
+    ["Reflective colour screen + front light", 0.1502, 100.0, "C"],
+  ],
+  "TVs": [
+    ["TV today (polarizer OLED)", 44.09, 100.0, "E"],
+    ["TV, polarizer-free + moth eye", 31.99, 100.0, "D"],
+    ["TV, + firefly", 23.17, 100.0, "D"],
+  ],
+};
+let lsGroup = "Phones";
+function renderScore() {
+  const rows = LIGHT_SCORE[lsGroup], max = Math.max(...rows.map(r => r[1]));
+  $("lsBars").innerHTML = rows.map(([name, wh, readable, g]) => `
+    <div class="bar">
+      <div class="top"><b>${name}</b><span><b>${g}</b> &nbsp; ${wh < 1 ? wh.toFixed(2) : wh.toFixed(1)} Wh per readable hour</span></div>
+      <div class="track"><div class="fill" style="width:${(100 * wh / max).toFixed(1)}%;background:${g.endsWith("!") ? "var(--ember)" : "var(--leaf)"}"></div></div>
+      <small>${readable === 100 ? "Readable all day." : `Readable ${readable}% of the time: fails in full sun.`}</small>
+    </div>`).join("");
+}
+chipGroup($("lsGroup"), "lsgroup", Object.keys(LIGHT_SCORE).map(k => [k, k]), lsGroup, id => { lsGroup = id; renderScore(); });
+renderScore();
 </script>
 
 </body>
