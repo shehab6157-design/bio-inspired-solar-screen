@@ -1,0 +1,10 @@
+user,mode,display_J_day,saved_vs_emissive_%,reduced_quality_h
+office_worker,emissive,7707.0,0.0,0.0
+office_worker,reflective,2860.0,62.8,2.0
+office_worker,chameleon,3391.0,55.9,0.0
+outdoor_worker,emissive,14335.0,0.0,0.0
+outdoor_worker,reflective,2098.0,85.3,1.0
+outdoor_worker,chameleon,2373.0,83.4,0.0
+night_owl,emissive,4521.0,0.0,0.0
+night_owl,reflective,3186.0,30.0,4.0
+night_owl,chameleon,4180.0,7.5,0.0

@@ -1,0 +1,10 @@
+{
+  "name": "shelf_label",
+  "display": "reflective",
+  "front_cm2": 20,
+  "back_cm2": 20,
+  "load_j_day": [0.5, 2],
+  "display_share": [0.5, 0.7],
+  "front_light": [[500, "led", 14]],
+  "back_light": []
+}

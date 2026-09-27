@@ -1,0 +1,10 @@
+{
+  "name": "smartwatch",
+  "display": "emissive",
+  "front_cm2": 12,
+  "back_cm2": 0,
+  "load_j_day": [3000, 6000],
+  "display_share": [0.2, 0.4],
+  "front_light": [[300, "led", 6], [10000, "sun", 1]],
+  "back_light": []
+}

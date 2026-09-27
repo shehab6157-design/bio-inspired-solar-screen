@@ -1,0 +1,10 @@
+{
+  "name": "tablet",
+  "display": "emissive",
+  "front_cm2": 400,
+  "back_cm2": 420,
+  "load_j_day": [60000, 110000],
+  "display_share": [0.5, 0.7],
+  "front_light": [[300, "led", 3]],
+  "back_light": [[300, "led", 2]]
+}
