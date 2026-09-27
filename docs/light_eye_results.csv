@@ -1,0 +1,9 @@
+environment,truth,light_eye_correct_%,one_band_sensor_correct_%
+in a pocket,dark,83.5,83.5
+dark bedroom (reading),lamp,86.9,86.9
+dim lamp,lamp,99.4,100.0
+office LED,lamp,100.0,100.0
+"window, clear glass",day,100.0,39.7
+"window, low-e glass",day,99.9,39.3
+"outdoors, shade",day,100.0,100.0
+"outdoors, sun",day,100.0,100.0
