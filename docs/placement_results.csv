@@ -1,0 +1,31 @@
+lamp,daylight_factor_%,place,controller,survived_winter_%,updates_per_day,longest_gap_h
+evening lamp,3.0,by the window,fixed,100.0,144.0,0.2
+evening lamp,3.0,by the window,torpor,100.0,253.3,0.2
+evening lamp,3.0,by the window,circadian,100.0,284.1,0.5
+evening lamp,2.0,1-2 m in,fixed,100.0,144.0,0.2
+evening lamp,2.0,1-2 m in,torpor,100.0,251.5,0.2
+evening lamp,2.0,1-2 m in,circadian,100.0,282.9,0.5
+evening lamp,1.0,3-4 m in,fixed,90.0,144.0,0.2
+evening lamp,1.0,3-4 m in,torpor,100.0,246.5,0.2
+evening lamp,1.0,3-4 m in,circadian,100.0,276.5,0.5
+evening lamp,0.5,back of the room,fixed,75.0,144.0,0.2
+evening lamp,0.5,back of the room,torpor,100.0,235.0,0.5
+evening lamp,0.5,back of the room,circadian,100.0,235.7,0.5
+evening lamp,0.2,far corner,fixed,47.5,143.7,1.9
+evening lamp,0.2,far corner,torpor,100.0,172.7,0.5
+evening lamp,0.2,far corner,circadian,100.0,141.4,0.5
+daylight only,3.0,by the window,fixed,100.0,144.0,0.2
+daylight only,3.0,by the window,torpor,100.0,216.6,0.5
+daylight only,3.0,by the window,circadian,100.0,230.2,0.5
+daylight only,2.0,1-2 m in,fixed,90.0,144.0,0.2
+daylight only,2.0,1-2 m in,torpor,100.0,212.4,0.5
+daylight only,2.0,1-2 m in,circadian,100.0,225.6,0.5
+daylight only,1.0,3-4 m in,fixed,52.5,144.0,0.2
+daylight only,1.0,3-4 m in,torpor,100.0,200.4,0.5
+daylight only,1.0,3-4 m in,circadian,100.0,211.3,0.5
+daylight only,0.5,back of the room,fixed,32.5,142.2,13.6
+daylight only,0.5,back of the room,torpor,100.0,179.1,2.0
+daylight only,0.5,back of the room,circadian,100.0,162.4,2.0
+daylight only,0.2,far corner,fixed,2.5,86.7,19.5
+daylight only,0.2,far corner,torpor,67.5,86.8,2.0
+daylight only,0.2,far corner,circadian,82.5,76.3,2.0
