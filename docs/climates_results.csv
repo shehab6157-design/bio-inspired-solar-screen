@@ -1,0 +1,25 @@
+city,home,policy,grid_J_day,phone_wakes_day,on_time_%,on_free_light_%,epaper_dark_time_%,dashboard_refresh_day
+Northern Israel,evening lamp,today,589.7,72.8,100.0,0.0,0.0,48.0
+Northern Israel,evening lamp,nearest,47.6,3.0,100.0,57.8,0.0,48.0
+Northern Israel,evening lamp,hive,45.4,3.0,100.0,61.1,0.0,226.4
+Northern Israel,daylight only,today,589.7,72.8,100.0,0.0,0.0,48.0
+Northern Israel,daylight only,nearest,47.6,3.0,100.0,57.6,0.0,48.0
+Northern Israel,daylight only,hive,46.4,3.2,100.0,59.6,0.0,166.8
+London,evening lamp,today,589.7,72.8,100.0,0.0,0.0,48.0
+London,evening lamp,nearest,47.6,3.0,100.0,57.6,0.0,48.0
+London,evening lamp,hive,46.1,3.0,100.0,60.6,0.0,168.9
+London,daylight only,today,589.7,72.8,100.0,0.0,13.0,41.9
+London,daylight only,nearest,49.4,3.0,100.0,54.6,13.7,41.5
+London,daylight only,hive,58.2,4.3,100.0,51.4,2.1,89.0
+Berlin,evening lamp,today,589.7,72.8,100.0,0.0,0.0,48.0
+Berlin,evening lamp,nearest,47.6,3.0,100.0,57.6,0.0,48.0
+Berlin,evening lamp,hive,46.1,3.0,100.0,60.5,0.0,170.1
+Berlin,daylight only,today,589.7,72.8,100.0,0.0,12.2,42.3
+Berlin,daylight only,nearest,49.6,3.0,100.0,54.6,13.1,41.9
+Berlin,daylight only,hive,57.1,4.2,100.0,51.5,1.9,91.0
+Oslo,evening lamp,today,589.7,72.8,100.0,0.0,0.0,48.0
+Oslo,evening lamp,nearest,47.6,3.0,100.0,57.6,0.0,48.0
+Oslo,evening lamp,hive,48.7,3.0,100.0,55.9,0.0,122.6
+Oslo,daylight only,today,589.7,72.8,100.0,0.0,46.4,26.0
+Oslo,daylight only,nearest,59.2,3.0,100.0,37.0,50.9,23.9
+Oslo,daylight only,hive,90.6,6.3,100.0,21.1,27.5,29.5
