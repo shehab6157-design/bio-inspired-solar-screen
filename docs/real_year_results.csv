@@ -1,0 +1,4 @@
+controller,no_fail_%,updates_per_day,worst_day_updates,longest_gap_h,worst_month
+fixed,100.0,144.0,144.0,0.2,1
+torpor,100.0,263.7,250.0,0.2,1
+circadian,100.0,288.0,288.0,0.1,1
