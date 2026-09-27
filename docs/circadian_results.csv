@@ -1,0 +1,10 @@
+scenario,controller,no_fail_after_learning_%,no_fail_all_28d_%,updates_per_day,worst_day_updates,longest_gap_h
+office_weekends,fixed,0.0,0.0,114.7,0.0,35.5
+office_weekends,torpor,24.7,24.7,154.2,9.0,16.0
+office_weekends,circadian,100.0,27.3,103.7,47.5,2.0
+cloudy_window,fixed,100.0,100.0,144.0,144.0,0.2
+cloudy_window,torpor,100.0,100.0,257.4,249.0,0.2
+cloudy_window,circadian,100.0,100.0,283.9,283.0,0.5
+dim_home,fixed,54.7,54.7,144.0,144.0,0.2
+dim_home,torpor,100.0,100.0,151.6,151.0,0.5
+dim_home,circadian,100.0,100.0,130.9,130.0,0.2
