@@ -13,7 +13,7 @@ abstract: >-
   An open simulation model of nature-inspired screen technologies (moth-eye
   anti-glare, firefly light extraction, reflective and glowing modes, torpor
   and circadian energy planning, bee-colony task routing) for any screen
-  device, validated on real satellite sunlight data, with a proposed metric,
+  device, run on real satellite sunlight data, with a proposed metric,
   the Light-Life Score: energy per hour a screen is actually readable.
 keywords:
   - display energy

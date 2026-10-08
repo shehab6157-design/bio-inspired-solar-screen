@@ -203,6 +203,7 @@ python3 -m venv .venv && source .venv/bin/activate
 pip install numpy pandas matplotlib pytest
 
 # real sunlight data (free, no account)
+mkdir -p data
 curl -s "https://re.jrc.ec.europa.eu/api/v5_2/seriescalc?lat=32.69&lon=35.42&startyear=2020&endyear=2020&outputformat=csv" -o data/pvgis_2020.csv
 # the London, Berlin and Oslo lines are at the top of src/climates.py
 
