@@ -2,7 +2,7 @@
 
 An open, tested energy model for screens that borrow from nature: moth eyes, firefly lanterns, leaf antennas, chameleons, hummingbird torpor, bee colonies and the sun and moon. It works for **any screen device**: e-readers, shelf labels, smartwatches, phones, tablets and TVs.
 
-**Live demo:** https://shehab6157-design.github.io/bio-inspired-solar-screen/ — includes a **"Score your screen"** tool: describe any screen and get its Light-Life grade and the nature layer that would improve it most.
+**Live demo:** https://shehab6157-design.github.io/bio-inspired-solar-screen/, with a **"Score your screen"** tool: describe any screen and get its Light-Life grade and the nature layer that would improve it most.
 
 The question it answers: **which nature-inspired ideas actually save energy or keep a screen working, on which device, and what do they cost?** Every answer comes from simulation with honest uncertainty ranges, and the key results are tested on **real sunlight data** from four cities.
 
@@ -38,28 +38,28 @@ These come from `src/organism.py`, which stacks the layers one at a time on a re
 
 ### Phone: one office worker's day
 
-| Layer added | Screen + message energy | Saved | Phone wake-ups |
+| Layer added | Screen and message energy | Saved | Phone wake-ups |
 |---|---|---|---|
 | Today's phone | 6,300 J | 0% | 73 |
-| + moth eye, no polarizer | 4,530 J | 28% | 73 |
-| + firefly extraction | 3,438 J | 45% | 73 |
-| + moon mode | 2,530 J | 60% | 73 |
-| **+ hive** | **2,004 J** | **68%** | **3** |
+| Moth eye added, no polarizer | 4,530 J | 28% | 73 |
+| Firefly extraction added | 3,438 J | 45% | 73 |
+| Moon mode added | 2,530 J | 60% | 73 |
+| **Hive added** | **2,004 J** | **68%** | **3** |
 
 ### Phone: one hour in summer sun
 
 | Phone | Peak temperature | Unreadable minutes (of 60) |
 |---|---|---|
 | Today | 51 °C | 54 |
-| **Heat mirror + moon mode** | **44 °C** | **0** |
+| **Heat mirror and moon mode** | **44 °C** | **0** |
 
 ### TV: 4 hours an evening
 
-**50.9 → 26.7 kWh a year (48% less)** with moth eye, no polarizer, and firefly extraction.
+**From 50.9 to 26.7 kWh a year (48% less)** with moth eye, no polarizer, and firefly extraction.
 
 ### E-reader: 6 Wh battery, 2.5 hours of reading a day
 
-**5.5 → 31.3 days per charge**: glowing only → chameleon → unified glide path.
+**From 5.5 to 31.3 days per charge**, going from glowing only, to chameleon, to the unified glide path.
 
 ### The Light-Life Score: rating screens the way people use them
 
@@ -69,11 +69,11 @@ Official energy tests measure a screen's power at a few fixed room-light levels 
 |---|---|---|---|
 | Phone today (polarizer OLED) | 0.35 Wh | 100% | D |
 | Phone, polarizer-free | 0.31 Wh | 92% | **D!** (unreadable in full sun) |
-| Phone, polarizer-free + moth eye | 0.23 Wh | 100% | D |
+| Phone, polarizer-free with moth eye | 0.23 Wh | 100% | D |
 | **Phone, full bio-stack** | **0.09 Wh** | 100% | **B** |
-| Reflective colour screen + front light | 0.15 Wh | 100% | C |
+| Reflective colour screen with front light | 0.15 Wh | 100% | C |
 | TV today | 44.1 Wh | 100% | E |
-| TV, polarizer-free + moth eye + firefly | 23.2 Wh | 100% | D |
+| TV, polarizer-free with moth eye and firefly | 23.2 Wh | 100% | D |
 
 A power-only test would rank the polarizer-free phone above today's phone; the score catches that it saves power by being unreadable in the sun.
 
@@ -90,48 +90,48 @@ A power-only test would rank the polarizer-free phone above today's phone; the s
 
 ## Results layer by layer
 
-**Glare and the polarizer (phones, TVs)** — `src/polarizer.py`
-Removing the polarizer saves about 25% in dim rooms, matching the industry's reported figures. Alone, it becomes unreadable in strong sun once the panel's internal reflection reaches 2%. With the moth eye, it stays readable up to 4% and still saves 32–57%: **the moth eye doubles the design window.** A real polarizer-free panel has a total reflectance of 6.41%, inside this window.
+**Glare and the polarizer (phones, TVs):** `src/polarizer.py`
+Removing the polarizer saves about 25% in dim rooms, matching the industry's reported figures. Alone, it becomes unreadable in strong sun once the panel's internal reflection reaches 2%. With the moth eye, it stays readable up to 4% and still saves 32 to 57%: **the moth eye doubles the design window.** A real polarizer-free panel has a total reflectance of 6.41%, inside this window.
 ![Polarizer](docs/polarizer.png)
 
-**Heat in the sun (phones)** — `src/two_seas.py`
+**Heat in the sun (phones):** `src/two_seas.py`
 Sunlight puts about 6.5 W of heat into a phone's face, several times the chip's 1.5 W. A heat mirror cuts that to 4 W and halves screen-off time. Switching to reflective "moon" mode outdoors reflects visible sunlight too, keeping the phone readable for the whole hour.
 ![Two Seas](docs/two_seas.png)
 
-**Unified glide path (e-readers)** — `src/unified.py`
+**Unified glide path (e-readers):** `src/unified.py`
 One plan, drawn as a straight line from a full battery to a 5% reserve on the chosen charge day, decides screen mode and syncing. Cost: about 1.6 hours a day on the cheaper front-lit look.
 ![Unified](docs/unified.png)
 
-**Evolved settings** — `src/evolve.py`
+**Evolved settings:** `src/evolve.py`
 A genetic algorithm maps the full trade-off between battery life and reading comfort. It found no design better than the hand design on both goals at once, which validates the hand design, and showed that only one setting (how far ahead the plan looks) really matters.
 ![Pareto front](docs/pareto_front.png)
 
-**Circadian planning** — `src/circadian.py`
+**Circadian planning:** `src/circadian.py`
 With offices dark at weekends, reactive torpor lets 75% of devices fail; the weekday-learning controller keeps 100% alive after its first week.
 ![Circadian](docs/circadian.png)
 
-**Real sunlight** — `src/real_data.py`, `src/placement.py`, `src/climates.py`
-Hourly 2020 data from PVGIS (European Commission). Real winter near a window gets 61–72% of the light the early models assumed; summer gets up to 194%. **Winter is the true bottleneck.**
+**Real sunlight:** `src/real_data.py`, `src/placement.py`, `src/climates.py`
+Hourly 2020 data from PVGIS (European Commission). Real winter near a window gets 61 to 72% of the light the early models assumed; summer gets up to 194%. **Winter is the true bottleneck.**
 ![Placement](docs/placement.png)
 ![Climates](docs/climates.png)
 
-**Hive screens** — `src/hive.py`
+**Hive screens:** `src/hive.py`
 Routing messages to the best-placed screen cuts phone wake-ups by 96% and message energy by 92%, with every message on time.
 ![Hive](docs/hive.png)
 
-**Light-Life Score** — `src/light_score.py`
+**Light-Life Score:** `src/light_score.py`
 One number for any screen: energy per readable hour across a realistic day of light, with a "!" when a screen is readable less than 95% of the time.
 ![Light-Life Score](docs/light_score.png)
 
-**Light eye** — `src/light_eye.py`
+**Light eye:** `src/light_eye.py`
 LED light carries almost no infrared (0.004 per unit of visible light); sunlight carries a lot (0.87). Reading both bands, the eye identifies daylight through a window **100%** of the time, even through low-e glass, where a normal one-band light sensor gets it right only about **40%** of the time. It gives sensor-less devices, like shelf labels, free sensing.
 ![Light eye](docs/light_eye.png)
 
-**Weather-aware planning and the waggle dance** — `src/waggle.py`
+**Weather-aware planning and the waggle dance:** `src/waggle.py`
 Home e-papers that learn their normal day and notice when *today* is darker fail far less: the darkest screen in a home can't update 4.4% of the time in a London January instead of 12.5% with torpor, and 1.6% instead of 10% in Berlin. Sharing the window screen's weather reading with the others (the "waggle dance") adds nothing measurable, because every room sees the same outdoor weather, only dimmer.
 ![Waggle dance](docs/waggle.png)
 
-**Invisible-band harvesting** — `src/spectral.py`
+**Invisible-band harvesting:** `src/spectral.py`
 A dye layer tuned to near-infrared stops dimming the screen, but room LED light has almost no infrared, so indoors it gains almost nothing. It helps only devices used in daylight.
 ![Spectral heatmap, phone](docs/spectral_heatmap_phone.png)
 
@@ -187,7 +187,7 @@ This is a design and analysis tool, not a claim to have invented the individual 
 | `placement.py` | Winter survival by distance from a window |
 | `hive.py` | Household screens as a bee colony |
 | `climates.py` | The hive in Israel, London, Berlin and Oslo |
-| `polarizer.py` | Polarizer-free OLED + moth eye |
+| `polarizer.py` | Polarizer-free OLED with moth eye |
 | `two_seas.py` | Phone temperature in summer sun |
 | `light_score.py` | Light-Life Score: energy per readable hour for any screen |
 | `light_eye.py` | Two-band sensing from the screen's own layers |
@@ -226,7 +226,7 @@ curl -s "https://re.jrc.ec.europa.eu/api/v5_2/seriescalc?lat=32.69&lon=35.42&sta
 
 ## Inspiration
 
-The science of light and vision this project stands on began with Ibn al-Haytham's *Book of Optics*. The Quran's invitation to reflect on creation (3:190–191) shaped the approach, and some of its images map directly onto the design: the sun as a lamp and the moon as a light that reflects (71:16, 10:5) — the difference between a glowing and a reflective screen; two seas that meet without mixing (55:19–20) — one surface where different parts of the light keep to their own jobs; everything moving on a set course (36:38–40) — predictable rhythms a device can plan around.
+The science of light and vision this project stands on began with Ibn al-Haytham's *Book of Optics*. The Quran's invitation to reflect on creation (3:190-191) shaped the approach, and some of its images map directly onto the design: the sun as a lamp and the moon as a light that reflects (71:16, 10:5), which is the difference between a glowing and a reflective screen; two seas that meet without mixing (55:19-20), one surface where different parts of the light keep to their own jobs; and everything moving on a set course (36:38-40), the predictable rhythms a device can plan around.
 
 ## Data
 
@@ -234,7 +234,7 @@ Sunlight data: PVGIS (Photovoltaic Geographical Information System), European Co
 
 ## Author
 
-Shehab Shibli — [GitHub](https://github.com/shehab6157-design) · [LinkedIn](https://www.linkedin.com/in/shehab-shibli)
+Shehab Shibli, [GitHub](https://github.com/shehab6157-design) and [LinkedIn](https://www.linkedin.com/in/shehab-shibli)
 
 ## License
 
